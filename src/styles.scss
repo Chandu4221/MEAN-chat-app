@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+.heading {
+  @apply bg-red-200;
+  @apply text-red-900;
+  @apply text-center;
+}
+
+@import "tailwindcss/utilities";
