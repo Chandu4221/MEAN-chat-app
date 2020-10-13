@@ -18,7 +18,6 @@ TE = function (err, log) {
   if (process.env.NODE_ENV === "development") {
     console.error(log);
   }
-
   throw new Error(_err);
 };
 

@@ -19,6 +19,7 @@ const {
         try {
           ReS(res, await loginUser(req), 200);
         } catch (error) {
+          console.log(error)
           // next(error)
           ReE(res, error, 422, "User Controller >>> login method");
         }

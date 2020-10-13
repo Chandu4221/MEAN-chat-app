@@ -37,11 +37,7 @@ module.exports = (function () {
           },
         };
       } else {
-        return {
-          errorCode: "1011",
-          message: "Incorrect username or password",
-          statusCode: 403,
-        };
+        return TE("Incorrect username or password");
       }
     } catch (error) {
       TE(error);

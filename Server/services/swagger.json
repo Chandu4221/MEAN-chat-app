@@ -1,0 +1,279 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "title": "MEAN-Chat DOCUMENTATION",
+      "description": "Mean-Chat documentation version 1.0",
+      "version": "1.0",
+      "contact": {
+        "name": "API Support",
+        "email": "support@mean-chat.com"
+      }
+    },
+    "servers": [
+      {
+        "url": "https://mean-chat-app-2020.herokuapp.com/",
+        "description": "production server"
+      },
+      {
+        "url": "http://localhost:8081",
+        "description": "development server"
+      }
+    ],
+    "produces": [
+      "application/json"
+    ],
+    "tags": [
+      {
+        "name": "User Authentication",
+        "description": ""
+      }
+    ],
+    "components": {
+      "parameters": {
+        "offsetParam": {
+          "in": "query",
+          "name": "pageNumber",
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1
+          },
+          "required": true,
+          "description": "current page number (offset)"
+        },
+        "limitParam": {
+          "in": "query",
+          "name": "pageSize",
+          "schema": {
+            "type": "integer",
+            "minimum": 10,
+            "default": 10
+          },
+          "required": true,
+          "description": "number of users to return per page (limit)"
+        }
+      },
+      "securitySchemas": {
+        "BearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+          "bearerFormat": "JWT"
+        },
+        "ApiKeyAuth": {
+          "type": "apiKey",
+          "in": "header",
+          "name": "Authorization"
+        }
+      }
+    },
+    "paths": {
+      "/api/users/register": {
+        "post": {
+          "tags": [
+            "User Authentication"
+          ],
+          "summary": "New User Signup Username and Phone Number",
+          "description": "Add a new user",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "required": true,
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "You should pass Username, Phone Number, Mobile Number to Signup here",
+              "required": true,
+              "schema": {
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "phoneNumber": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "example":{
+                    "data":{
+                        "username": "AnkitKumer",
+                        "password": "MustafaGondalwala32@gmail.com",
+                        "phoneNumber":"8200608406"
+                    }
+                }
+              }
+            }
+          ],
+          "responses": {
+            "422": {
+              "description": "Unprocessable Entity",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "status": {
+                        "type": "boolean"
+                      },
+                      "message": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "example": {
+                        "errorCode": 1000,
+                        "message": "username already exists",
+                        "statusCode": 400,
+                        "success": true
+                  }
+                }
+              }
+            },
+            "200": {
+              "description": "success response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "phoneNumber": {
+                        "type": "string"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "example": {
+                        "data": {
+                            "UserConfirmed": false
+                        },
+                        "user": {
+                            "newUser": {
+                                "isVerifiedUser": false,
+                                "_id": "5f8548ad15f30300178f0868",
+                                "username": "AnkitKumer",
+                                "phoneNumber": "8200608406",
+                                "hash": "$2b$10$Al.j91qmjt/ZHn/6oU0POeEHlLiycRiXpn8x14Stoii3hIoD57Eeq",
+                                "createdAt": "2020-10-13T06:26:53.938Z",
+                                "updatedAt": "2020-10-13T06:26:53.938Z",
+                                "__v": 0
+                            }
+                        },
+                        "success": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/users/login": {
+        "post": {
+          "tags": [
+            "User Authentication"
+          ],
+          "summary": "Already Register User Login Through Username and Password",
+          "description": "Enter Phone Number and Password for login ",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "required": true,
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "You should pass Username and Password to Signup here",
+              "required": true,
+              "schema": {
+                "properties": {
+                    "username": {
+                        "type": "string"
+                    },
+                    "phoneNumber": {
+                        "type": "string"
+                    }
+                },
+                "example":{
+                    "data":{
+                        "username": "MustafaGondalwala",
+                        "password": "MustafaGondalwala32@gmail.com"
+                    }
+                }
+              }
+              
+            }
+          ],
+          "responses": {
+            "422": {
+                "description": "Unprocessable Entity",
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "type": "boolean"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "example": {
+                            "success": false,
+                            "message": "Error: Incorrect username or password"
+                    }
+                  }
+                }
+              },
+            "200": {
+              "description": "success response",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "loginOTP": {
+                        "type": "integer"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "success": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "example": {
+                        "data": {
+                            "AuthenticationResult": {
+                                "ExpiresIn": 3600,
+                                "TokenType": "Bearer",
+                                "AccessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Zjg1MjVkYzdmMzYwMTJhMTA4YjkwNGEiLCJpYXQiOjE2MDI1NzExMDIsImV4cCI6MzE2OTMxMDM1MTAyfQ.E26JhJlrvbGPKVt01IG-wUm5Tbx_5THswGsW-yqxOWM"
+                            }
+                        },
+                        "user": {
+                            "username": "MustafaGondalwala"
+                        },
+                        "success": true
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }

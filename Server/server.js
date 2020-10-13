@@ -11,9 +11,13 @@ const app = express();
 const http = require("http");
 const indexRouter = require("./routes/index");
 
+
+var swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+swaggerDocument = require("./services/swagger.json");
+
 const debug = require("debug")("backendcode:server");
 require("./globalFunction");
-
 // Serve only the static files form the dist directory
 app.use(express.static(__dirname + "/../dist/MEAN-chat-app"));
 
@@ -21,10 +25,7 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname + "/../dist/MEAN-chat-app/index.html"));
 });
 
-
 const server = http.createServer(app);
-
-
 const port = normalizePort(process.env.PORT || "3004");
 
 
@@ -60,6 +61,7 @@ app.use(express.static(path.join(__dirname + "/")));
 app.get("/health-check", (req, res) => {
   res.send("all good ✅");
 });
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api", indexRouter);
 
 
